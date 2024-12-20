@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "X Image Downloader",
+  "version": "1.0",
+  "description": "Download images from X/Twitter profiles",
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://twitter.com/*",
+    "https://x.com/*",
+    "https://*.twimg.com/*"
+  ],
+  "web_accessible_resources": [{
+    "resources": ["lib/jszip.min.js"],
+    "matches": ["https://twitter.com/*", "https://x.com/*"]
+  }],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+} 
