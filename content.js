@@ -129,4 +129,57 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     downloadImages(request.username, request.maxScrolls);
     sendResponse({ status: 'started' });
   }
-}); 
+});
+
+function createModal(imageUrls) {
+    // Check if the modal already exists
+    const existingModal = document.getElementById('imageDownloadModal');
+    if (existingModal) {
+        existingModal.remove(); // Remove the existing modal if it exists
+    }
+
+    const modal = document.createElement('div');
+    modal.id = 'imageDownloadModal'; // Give the modal an ID for easy reference
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    modal.style.zIndex = '9999';
+    modal.style.overflowY = 'scroll';
+    modal.innerHTML = `
+        <div style="padding: 20px; color: white;">
+            <h1>Select Images to Download</h1>
+            <div class="grid" id="imageGrid"></div>
+            <button id="downloadSelected">Download Selected</button>
+            <button id="closeModal" style="margin-top: 10px;">Close</button>
+        </div>
+    `;
+
+    const grid = modal.querySelector('#imageGrid');
+    imageUrls.forEach(url => {
+        const imgContainer = document.createElement('div');
+        imgContainer.innerHTML = `
+            <input type="checkbox" class="image-checkbox" data-url="${url}">
+            <img src="${url}" style="width: 100%; height: auto; border-radius: 8px;">
+        `;
+        grid.appendChild(imgContainer);
+    });
+
+    document.body.appendChild(modal);
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+
+    document.getElementById('downloadSelected').addEventListener('click', () => {
+        const selectedUrls = Array.from(document.querySelectorAll('.image-checkbox:checked'))
+            .map(cb => cb.dataset.url);
+        console.log('Selected URLs:', selectedUrls);
+        document.body.removeChild(modal);
+    });
+}
+
+// Example usage
+// createModal(['url1', 'url2', 'url3']); // Replace with actual URLs

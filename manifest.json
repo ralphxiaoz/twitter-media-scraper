@@ -5,9 +5,9 @@
   "description": "Download images from X/Twitter profiles",
   "permissions": [
     "activeTab",
-    "downloads",
     "scripting",
-    "tabs"
+    "storage",
+    "downloads"
   ],
   "host_permissions": [
     "https://twitter.com/*",
@@ -15,8 +15,8 @@
     "https://*.twimg.com/*"
   ],
   "web_accessible_resources": [{
-    "resources": ["lib/jszip.min.js"],
-    "matches": ["https://twitter.com/*", "https://x.com/*"]
+    "resources": ["preview.html", "preview.js", "test.html"],
+    "matches": ["<all_urls>"]
   }],
   "action": {
     "default_popup": "popup.html"
@@ -27,5 +27,11 @@
   "icons": {
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*", "https://x.com/*"],
+      "js": ["content.js"]
+    }
+  ]
 } 
